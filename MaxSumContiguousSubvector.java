@@ -37,7 +37,7 @@ public class MaxSumContiguousSubvector {
    // MAIN //
    //////////
    public static void main(String[] args) {
-   
+
        /**
         * Reads in a .txt file that contains comma-space delimited integers and stores the values in an array.
         * Prints out the MSCS value for each algorithm as applied to the input array extracted from file.
@@ -56,30 +56,30 @@ public class MaxSumContiguousSubvector {
       catch (IOException e) {
          System.out.println("Error reading input file 'phw_input.txt'");
       }
-   
+
         // Generates arrays 1 - 19,
         // of length 10, 15, 20, ..., 95, 100, ...
         // containing random integers ranging from -100 --> 100
       populateAllArrays(ARRAYS_2D);
-   
-   
+
+
       try {
               // Output to .txt file (Required) && output to .xls file for easier creation of Excel plots
          PrintWriter pw = new PrintWriter("dzt0021_phw_output.txt", "UTF-8");
          PrintWriter pwxls = new PrintWriter("dzt0021_phw_output.xls", "UTF-8");
          pw.printf("%-15s%-15s%-15s%-15s%-15s%-15s%-15s%-15s%n", "algorithm-1,", "algorithm-2,", "algorithm-3,", "algorithm-4,", "T1(n),", "T2(n),", "T3(n),", "T4(n)");
          pwxls.print("Algorithm-1\tAlgorithm-2\tAlgorithm-3\tAlgorithm-4\tT1(n)\tT2(n)\tT3(n)\tT4(n)\tX-axis\n");
-      
+
          DecimalFormat df = new DecimalFormat("0.00");
          int size = 10; /* The starting size of array[0] in ARRAYS_2D (Initially 10) */
-      
+
               // For each array in ARRAYS_2D
          for (int[] array: ARRAYS_2D) {
                   // Print to files the actual run time execution from calling each function RESOLUTION_SIZE times
             for (int algo = 1; algo < 5; algo++) {
                pw.printf("%-15s", df.format(getElapsedTime(array, RESOLUTION_SIZE, algo)) + ",");
                pwxls.print(df.format(getElapsedTime(array, RESOLUTION_SIZE, algo)) + "\t");
-            
+
             }
                   // Then print off the estimated run time based on each increasing number of inputs T(n)
                   // where n = 10, 15, 20, ... , 95, 100, ...
@@ -95,15 +95,15 @@ public class MaxSumContiguousSubvector {
             }
             size += 5;
          }
-           // Close PrintWriters for output files dzt0021_phw_output
+           // Close PrintWriters for output files dzt0021_phw_output(.xls && .txt)
          pw.close();
          pwxls.close();
-      
+
       }
       catch (IOException e) {
          System.out.println("Error writing to output file.");
       }
-   
+
    }
 
    //////////////////
@@ -168,7 +168,7 @@ public class MaxSumContiguousSubvector {
       int maxCrossing = maxToLeft + maxToRight;
       int maxInA = maxSum(x, l, m);
       int maxInB = maxSum(x, m + 1, u);
-   
+
       return Math.max(Math.max(maxCrossing, maxInA), maxInB);
    }
 
@@ -232,40 +232,40 @@ public class MaxSumContiguousSubvector {
    {
       double start;
       double finish;
-   
+
       switch (algo) {
-      
+
          case 1: start = System.nanoTime();
             for (int i = 1; i < n + 1; i++) {
                algorithm1(arr);
             }
             finish = System.nanoTime();
             return (finish - start) / 1000;
-      
+
          case 2: start = System.nanoTime();
             for (int i = 1; i < n + 1; i++) {
                algorithm2(arr);
             }
             finish = System.nanoTime();
             return (finish - start) / 1000;
-      
+
          case 3: start = System.nanoTime();
             for (int i = 1; i < n + 1; i++) {
                maxSum(arr, 0, arr.length - 1);
             }
             finish = System.nanoTime();
             return (finish - start) / 1000;
-      
+
          case 4: start = System.nanoTime();
             for (int i = 1; i < n + 1; i++) {
                algorithm2(arr);
             }
             finish = System.nanoTime();
             return (finish - start) / 1000;
-      
+
          default:
             System.out.println("Invalid case provided for 'getElapsedTime()'!");
-      
+
       }
       return -1;
    }
@@ -275,20 +275,21 @@ public class MaxSumContiguousSubvector {
    * calculated complexity of Algorithm-1 thru Algorithm-4
    * @param n   Represents each input size
    * @param algo   Is the algorithm for the theoretical time we want to measure ID'd from 1..4
-   * @return double The computed ceiling of our theoretical T(n) divided by 100 else -1 if invalid
+   * @return double The computed ceiling of our theoretical T(n) else -1 if invalid
    */
    private static double getTnValue(int n, int algo) {
-   
+
       switch(algo) {
-      
+
          case 1:
-            return Math.ceil(((7 * Math.pow(n, 3)) / 6) + (17 * Math.pow(n, 2) / 2) + ((31 * n) / 3) + 4);
+            return Math.ceil((7/6) * Math.pow(n, 3) + (7 * Math.pow(n, 2)) + ((47/6) * n) + 4);
          case 2:
-            return Math.ceil(((7 * Math.pow(n, 2)) + (10 * n) + 4));
+            //return Math.ceil(((7 * Math.pow(n, 2)) + (10 * n) + 4));
+            return Math.ceil((6 * Math.pow(n, 2) + (8 * n) + 4));
          case 3:
             return Math.ceil(n * (Math.log(n) / Math.log(2)) + (n * 81));
          case 4:
-            return Math.ceil((18 * n) + 5);
+            return Math.ceil((15 * n) + 4);
          default: System.out.println("Invalid case provided for 'getTnValue()'!");
       }
       return -1;
